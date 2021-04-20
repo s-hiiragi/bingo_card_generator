@@ -72,6 +72,15 @@ function onImgLoad() {
             ctx.fillText(num, x, y);
         }
     }
+
+    const cardUrl = canvas.toDataURL();
+
+    const link = document.createElement('a');
+    //link.style.display = 'none';
+    link.href = cardUrl;
+    link.download = '';
+    link.innerText = 'ダウンロード';
+    document.querySelector('article').appendChild(link);
 }
 </script>
 </article>
