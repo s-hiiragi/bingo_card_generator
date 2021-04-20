@@ -1,3 +1,4 @@
 # メモ
 
-- iPhoneのSafari/Chromeで画像を保存できない
+- [x] iPhoneのSafari/Chromeで画像を保存できない
+
