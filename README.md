@@ -1,5 +1,6 @@
 # Bingo Card Generator
 
+https://s-hiiragi.github.io/bingo_card_generator/
 
 ## 注意事項
 
