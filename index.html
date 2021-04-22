@@ -22,8 +22,6 @@ const img = new Image();
 img.addEventListener('load', onImgLoad);
 img.src = 'EzYm4SQVgAE7wXi.png';
 
-const selectedNums = [];
-
 function onImgLoad() {
     const canvas = document.querySelector('#canvas');
     canvas.width = img.width;
@@ -39,6 +37,7 @@ function onImgLoad() {
     const fontSize = 60;
     ctx.font = fontSize + 'px serif';
 
+    const selectedNums = [];
     for (let i = 0; i < cellYs.length - 1; i++) {
         for (let j = 0; j < cellXs.length - 1; j++) {
             if (i == 2 && j == 2) {
