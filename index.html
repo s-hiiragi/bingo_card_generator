@@ -8,6 +8,7 @@
 <article>
 <h1>ビンゴカードジェネレータ</h1>
 <p>ページを更新するたびに番号が変わります。</p>
+<div id="download_link_container"></div>
 <canvas id="canvas"></canvas>
 <script>
 
@@ -75,11 +76,10 @@ function onImgLoad() {
     const cardUrl = canvas.toDataURL();
 
     const link = document.createElement('a');
-    //link.style.display = 'none';
     link.href = cardUrl;
     link.download = '';
     link.innerText = 'ダウンロード';
-    document.querySelector('article').appendChild(link);
+    document.querySelector('#download_link_container').appendChild(link);
 }
 </script>
 </article>
