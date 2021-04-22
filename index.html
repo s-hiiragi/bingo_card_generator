@@ -17,6 +17,18 @@ function* randomIntGenerator(min, max) {
     }
 }
 
+function* uniqueRandomIntGenerator(min, max) {
+    const generatedNums = [];
+
+    for (const n of randomIntGenerator(min, max)) {
+        if (generatedNums.includes(n)) {
+            continue;
+        }
+        generatedNums.push(n);
+        yield n;
+    }
+}
+
 const bingoCardUrl = 'EzYm4SQVgAE7wXi.png';
 const cellXs = [65, 182, 306, 426, 557, 677];
 const cellYs = [200, 315, 439, 567, 691, 818];
@@ -38,12 +50,15 @@ function onImgLoad() {
     const fontSize = 60;
     ctx.font = fontSize + 'px serif';
 
-    const selectedNums = [];
+    const gen = uniqueRandomIntGenerator(1, 75);
+
     for (let i = 0; i < cellYs.length - 1; i++) {
         for (let j = 0; j < cellXs.length - 1; j++) {
             if (i == 2 && j == 2) {
                 continue;
             }
+
+            const num = gen.next().value;
 
             const left   = cellXs[j];
             const top    = cellYs[i];
@@ -52,16 +67,6 @@ function onImgLoad() {
 
             const x = left + (right - left - fontSize) / 2;
             const y = bottom - (bottom - top - fontSize) / 2;
-
-            let num;
-            while (true) {
-                num = randomIntGenerator(1, 75).next().value;
-                if (selectedNums.includes(num)) {
-                    continue;
-                }
-                selectedNums.push(num);
-                break;
-            }
 
             ctx.fillText(num, x, y);
         }
