@@ -11,7 +11,7 @@
 <canvas id="canvas"></canvas>
 <script>
 
-function* makeRandomInt(min, max) {
+function* randomIntGenerator(min, max) {
     while (true) {
         yield min + Math.floor(Math.random() * (max - min + 1));
     }
@@ -55,7 +55,7 @@ function onImgLoad() {
 
             let num;
             while (true) {
-                num = makeRandomInt(1, 75).next().value;
+                num = randomIntGenerator(1, 75).next().value;
                 if (selectedNums.includes(num)) {
                     continue;
                 }
