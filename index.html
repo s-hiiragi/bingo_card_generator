@@ -116,11 +116,11 @@ function drawCard() {
     }
 }
 
-function generateCard() {
+function generateCardInfo() {
     const cardNums = generateBingoNums();
     //const cardNums = generateBingoNumsByStandardRule();
     
-    cardInfo = [];
+    const cardInfo = [];
     for (let i = 0; i < 5; i++) {
         const column = [];
         for (let j = 0; j < 5; j++) {
@@ -132,6 +132,10 @@ function generateCard() {
         cardInfo.push(column);
     }
 
+    return cardInfo;
+}
+
+function generateCard() {
     drawCard();
 
     const canvas = document.querySelector('#canvas');
@@ -148,6 +152,7 @@ function blankCardImage_onLoad() {
     canvas.width = blankCardImage.width;
     canvas.height = blankCardImage.height;
 
+    cardInfo = generateCardInfo();
     generateCard();
 }
 </script>
