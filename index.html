@@ -83,14 +83,8 @@ blankCardImage.src = blankCardImageUrl;
 
 let cardNums = null;
 
-function blankCardImage_onLoad() {
-    cardNums = generateBingoNums();
-    //cardNums = generateBingoNumsByStandardRule();
-
+function drawCard() {
     const canvas = document.querySelector('#canvas');
-    canvas.width = blankCardImage.width;
-    canvas.height = blankCardImage.height;
-
     const ctx = canvas.getContext('2d');
     ctx.drawImage(blankCardImage, 0, 0);
 
@@ -117,12 +111,28 @@ function blankCardImage_onLoad() {
             ctx.fillText(n, x, y);
         }
     }
+}
 
+function generateCard() {
+    cardNums = generateBingoNums();
+    //cardNums = generateBingoNumsByStandardRule();
+
+    drawCard();
+
+    const canvas = document.querySelector('#canvas');
     const cardUrl = canvas.toDataURL();
 
     const container = document.querySelector('#download_link_container');
     container.innerHTML = '<a download>ダウンロード</a>';
     container.firstElementChild.href = cardUrl;
+}
+
+function blankCardImage_onLoad() {
+    const canvas = document.querySelector('#canvas');
+    canvas.width = blankCardImage.width;
+    canvas.height = blankCardImage.height;
+
+    generateCard();
 }
 </script>
 </article>
