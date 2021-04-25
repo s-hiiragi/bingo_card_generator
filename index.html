@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <title>ビンゴカードジェネレータ</title>
+<style>
+#canvas {
+    cursor: pointer;
+}
+</style>
 </head>
 <body>
 <article>
@@ -94,6 +99,8 @@ function drawCard() {
     const fontSize = 60;
     ctx.font = fontSize + 'px serif';
 
+    ctx.lineWidth = 10;
+
     for (let i = 0; i < 5; i++) {
         for (let j = 0; j < 5; j++) {
             if (i == 2 && j == 2) {
@@ -112,6 +119,12 @@ function drawCard() {
             const y = bottom - (bottom - top - fontSize) / 2;
 
             ctx.fillText(cell.num, x, y);
+
+            if (cell.checked) {
+                ctx.beginPath();
+                ctx.arc((left + right) / 2, (top + bottom) / 2, ((right - left) / 2) * 0.85, 0, Math.PI * 2);
+                ctx.stroke();
+            }
         }
     }
 }
@@ -119,7 +132,7 @@ function drawCard() {
 function generateCardInfo() {
     const cardNums = generateBingoNums();
     //const cardNums = generateBingoNumsByStandardRule();
-    
+
     const cardInfo = [];
     for (let i = 0; i < 5; i++) {
         const column = [];
@@ -146,11 +159,45 @@ function generateCard() {
     container.firstElementChild.href = cardUrl;
 }
 
+function canvas_onClick(event) {
+    const rect = canvas.getBoundingClientRect();
+    const point = {
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top
+    };
+
+    let cellPoint = null;
+    for (let i = 0; i < 5; i++) {
+        for (let j = 0; j < 5; j++) {
+            const left   = cellXs[i];
+            const top    = cellYs[j];
+            const right  = cellXs[i + 1] - borderWidth;
+            const bottom = cellYs[j + 1] - borderWidth;
+
+            if (left <= point.x && point.x < right) {
+                if (top <= point.y && point.y < bottom) {
+                    cellPoint = {row: j, column: i};
+                    break;
+                }
+            }
+        }
+    }
+    if (cellPoint === null) {
+        return;
+    }
+
+    const cellInfo = cardInfo[cellPoint.column][cellPoint.row];
+    cellInfo.checked = !cellInfo.checked;
+
+    generateCard();
+}
+
 function blankCardImage_onLoad() {
     const canvas = document.querySelector('#canvas');
 
     canvas.width = blankCardImage.width;
     canvas.height = blankCardImage.height;
+    canvas.addEventListener('click', canvas_onClick);
 
     cardInfo = generateCardInfo();
     generateCard();
