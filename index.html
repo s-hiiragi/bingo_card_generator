@@ -30,6 +30,27 @@ function* uniqueRandomIntGenerator(min, max) {
     }
 }
 
+// @return [5][5]number
+function generateBingoNums() {
+    const gen = uniqueRandomIntGenerator(1, 75);
+
+    const columns = [];
+    for (let i = 0; i < 5; i++) {
+        const column = [];
+        for (let j = 0; j < 5; j++) {
+            if (i == 2 && j == 2) {
+                column.push(NaN);
+                continue;
+            }
+
+            const n = gen.next().value;
+            column.push(n);
+        }
+        columns.push(column);
+    }
+    return columns;
+}
+
 const cardBackgroundUrl = 'EzYm4SQVgAE7wXi.png';
 const cellXs = [65, 182, 306, 426, 557, 677];
 const cellYs = [200, 315, 439, 567, 691, 818];
@@ -41,6 +62,8 @@ img.addEventListener('load', onImgLoad);
 img.src = cardBackgroundUrl;
 
 function onImgLoad() {
+    const columns = generateBingoNums();
+
     const canvas = document.querySelector('#canvas');
     canvas.width = img.width;
     canvas.height = img.height;
@@ -51,15 +74,13 @@ function onImgLoad() {
     const fontSize = 60;
     ctx.font = fontSize + 'px serif';
 
-    const gen = uniqueRandomIntGenerator(1, 75);
-
     for (let i = 0; i < 5; i++) {
         for (let j = 0; j < 5; j++) {
             if (i == 2 && j == 2) {
                 continue;
             }
 
-            const n = gen.next().value;
+            const n = columns[i][j];
 
             const left   = cellXs[i];
             const top    = cellYs[j];
