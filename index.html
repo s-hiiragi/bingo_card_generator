@@ -71,26 +71,26 @@ function generateBingoNumsByStandardRule() {
     return columns;
 }
 
-const cardBackgroundUrl = 'EzYm4SQVgAE7wXi.png';
+const blankCardImageUrl = 'EzYm4SQVgAE7wXi.png';
 const cellXs = [65, 182, 306, 426, 557, 677];
 const cellYs = [200, 315, 439, 567, 691, 818];
 const borderWidth = 5;
 
-const img = new Image();
+const blankCardImage = new Image();
 
-img.addEventListener('load', onImgLoad);
-img.src = cardBackgroundUrl;
+blankCardImage.addEventListener('load', blankCardImage_onLoad);
+blankCardImage.src = blankCardImageUrl;
 
-function onImgLoad() {
+function blankCardImage_onLoad() {
     const columns = generateBingoNums();
     //const columns = generateBingoNumsByStandardRule();
 
     const canvas = document.querySelector('#canvas');
-    canvas.width = img.width;
-    canvas.height = img.height;
+    canvas.width = blankCardImage.width;
+    canvas.height = blankCardImage.height;
 
     const ctx = canvas.getContext('2d');
-    ctx.drawImage(img, 0, 0);
+    ctx.drawImage(blankCardImage, 0, 0);
 
     const fontSize = 60;
     ctx.font = fontSize + 'px serif';
