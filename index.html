@@ -82,8 +82,8 @@ blankCardImage.addEventListener('load', blankCardImage_onLoad);
 blankCardImage.src = blankCardImageUrl;
 
 function blankCardImage_onLoad() {
-    const columns = generateBingoNums();
-    //const columns = generateBingoNumsByStandardRule();
+    const cardNums = generateBingoNums();
+    //const cardNums = generateBingoNumsByStandardRule();
 
     const canvas = document.querySelector('#canvas');
     canvas.width = blankCardImage.width;
@@ -101,7 +101,7 @@ function blankCardImage_onLoad() {
                 continue;
             }
 
-            const n = columns[i][j];
+            const n = cardNums[i][j];
 
             const left   = cellXs[i];
             const top    = cellYs[j];
