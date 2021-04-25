@@ -81,9 +81,11 @@ const blankCardImage = new Image();
 blankCardImage.addEventListener('load', blankCardImage_onLoad);
 blankCardImage.src = blankCardImageUrl;
 
+let cardNums = null;
+
 function blankCardImage_onLoad() {
-    const cardNums = generateBingoNums();
-    //const cardNums = generateBingoNumsByStandardRule();
+    cardNums = generateBingoNums();
+    //cardNums = generateBingoNumsByStandardRule();
 
     const canvas = document.querySelector('#canvas');
     canvas.width = blankCardImage.width;
