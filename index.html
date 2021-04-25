@@ -61,10 +61,10 @@ function onImgLoad() {
 
             const n = gen.next().value;
 
-            const left   = cellXs[j];
-            const top    = cellYs[i];
-            const right  = cellXs[j + 1] - borderWidth;
-            const bottom = cellYs[i + 1] - borderWidth;
+            const left   = cellXs[i];
+            const top    = cellYs[j];
+            const right  = cellXs[i + 1] - borderWidth;
+            const bottom = cellYs[j + 1] - borderWidth;
 
             const x = left + (right - left - fontSize) / 2;
             const y = bottom - (bottom - top - fontSize) / 2;
