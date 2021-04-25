@@ -30,7 +30,7 @@ function* uniqueRandomIntGenerator(min, max) {
     }
 }
 
-// @return [5][5]number
+// @return number[][] (5x5)
 function generateBingoNums() {
     const gen = uniqueRandomIntGenerator(1, 75);
 
@@ -51,7 +51,7 @@ function generateBingoNums() {
     return columns;
 }
 
-// @return [5][5]number
+// @return number[][] (5x5)
 function generateBingoNumsByStandardRule() {
     const columns = [];
     for (let i = 0; i < 5; i++) {
@@ -81,11 +81,14 @@ const blankCardImage = new Image();
 blankCardImage.addEventListener('load', blankCardImage_onLoad);
 blankCardImage.src = blankCardImageUrl;
 
-let cardNums = null;
+// type CellInfo = {num: number; checked: boolean;}
+// cardInfo: CellInfo[][] (5x5)
+let cardInfo = null;
 
 function drawCard() {
     const canvas = document.querySelector('#canvas');
     const ctx = canvas.getContext('2d');
+
     ctx.drawImage(blankCardImage, 0, 0);
 
     const fontSize = 60;
@@ -97,25 +100,37 @@ function drawCard() {
                 continue;
             }
 
-            const n = cardNums[i][j];
+            const cell = cardInfo[i][j];
 
             const left   = cellXs[i];
             const top    = cellYs[j];
             const right  = cellXs[i + 1] - borderWidth;
             const bottom = cellYs[j + 1] - borderWidth;
 
-            const numWidth = n >= 10 ? fontSize : fontSize / 2;
+            const numWidth = cell.num >= 10 ? fontSize : fontSize / 2;
             const x = left + (right - left - numWidth) / 2;
             const y = bottom - (bottom - top - fontSize) / 2;
 
-            ctx.fillText(n, x, y);
+            ctx.fillText(cell.num, x, y);
         }
     }
 }
 
 function generateCard() {
-    cardNums = generateBingoNums();
-    //cardNums = generateBingoNumsByStandardRule();
+    const cardNums = generateBingoNums();
+    //const cardNums = generateBingoNumsByStandardRule();
+    
+    cardInfo = [];
+    for (let i = 0; i < 5; i++) {
+        const column = [];
+        for (let j = 0; j < 5; j++) {
+            column[j] = {
+                num: cardNums[i][j],
+                checked: (i == 2 && j == 2 ? true : false)
+            };
+        }
+        cardInfo.push(column);
+    }
 
     drawCard();
 
@@ -129,6 +144,7 @@ function generateCard() {
 
 function blankCardImage_onLoad() {
     const canvas = document.querySelector('#canvas');
+
     canvas.width = blankCardImage.width;
     canvas.height = blankCardImage.height;
 
