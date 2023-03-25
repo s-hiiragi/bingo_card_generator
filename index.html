@@ -7,12 +7,19 @@
 #canvas {
     cursor: pointer;
 }
+#bingo-rules, #canvas {
+    user-select: none;
+}
 </style>
 </head>
 <body>
 <article>
 <h1>ビンゴカードジェネレータ</h1>
 <p>ページを更新するたびに番号が変わります。</p>
+<p id="bingo-rules">
+<label><input id="bingo-rule-std" name="bingo-rule" type="radio" checked>列ごとにランダム</label>
+<label><input id="bingo-rule-rnd" name="bingo-rule" type="radio">全マスがランダム</label>
+</p>
 <!-- this download link is disabled because tainted canvas problem -->
 <div id="download_link_container" style="display: none;"><a href="#">ダウンロード</a></div>
 <canvas id="canvas"></canvas>
@@ -61,7 +68,8 @@ function generateBingoNums() {
 function generateBingoNumsByStandardRule() {
     const columns = [];
     for (let i = 0; i < 5; i++) {
-        const g = uniqueRandomIntGenerator(i*15+1, (i+1)*15);
+        const gen = uniqueRandomIntGenerator(i*15+1, (i+1)*15);
+
         const column = [];
         for (let j = 0; j < 5; j++) {
             if (i == 2 && j == 2) {
@@ -69,7 +77,7 @@ function generateBingoNumsByStandardRule() {
                 continue;
             }
 
-            const n = g.next().value;
+            const n = gen.next().value;
             column.push(n);
         }
         columns.push(column);
@@ -130,9 +138,8 @@ function drawCard() {
     }
 }
 
-function generateCardInfo() {
-    const cardNums = generateBingoNums();
-    //const cardNums = generateBingoNumsByStandardRule();
+function generateCardInfo(isRandom) {
+    const cardNums = isRandom ? generateBingoNums() : generateBingoNumsByStandardRule();
 
     const cardInfo = [];
     for (let i = 0; i < 5; i++) {
@@ -203,11 +210,23 @@ function blankCardImage_onLoad() {
     cardInfo = generateCardInfo();
     generateCard();
 }
+
+document.querySelector('#bingo-rule-std').onchange = () => {
+    const canvas = document.querySelector('#canvas');
+    cardInfo = generateCardInfo();
+    generateCard();
+};
+document.querySelector('#bingo-rule-rnd').onchange = () => {
+    const canvas = document.querySelector('#canvas');
+    cardInfo = generateCardInfo(true);
+    generateCard();
+};
 </script>
 </article>
 <aside>
 <header>更新履歴</header>
 ・2021/4/20 17:30 番号が重複するバグを修正
+・2023/3/26 00:11 列ごとにランダムか全マスがランダムか選択できる機能を追加
 </aside>
 </body>
 </html>
